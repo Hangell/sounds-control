@@ -43,13 +43,13 @@
   },
   "homepage": "https://github.com/Hangell/sounds-control#readme",
   "devDependencies": {
-    "typescript": "^5.0.4",
+    "@rollup/plugin-commonjs": "^24.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-terser": "0.4.4",
     "@types/node": "^20.1.2",
     "rollup": "^3.0.0",
     "rollup-plugin-typescript2": "^0.31.1",
-    "@rollup/plugin-commonjs": "^24.0.0",
-    "@rollup/plugin-node-resolve": "^15.0.0",
-    "@rollup/plugin-terser": "^0.4.0"
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "tslib": "^2.6.2"
