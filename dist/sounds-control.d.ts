@@ -1,0 +1,30 @@
+export declare class SoundsControl {
+    private context;
+    private sources;
+    private buffers;
+    private isPlaying;
+    private isLooping;
+    private startTime;
+    private pausedTime;
+    private currentlyPlaying;
+    private gainNode;
+    private effectGainNode;
+    private playbackRates;
+    constructor();
+    loadSound(url: string, id: string): Promise<void>;
+    isSoundLoaded(id: string): boolean;
+    play(id: string, startTime?: number): Promise<void>;
+    playEffect(id: string): Promise<void>;
+    stop(id: string): void;
+    loop(id: string, startTime?: number): void;
+    setVolume(volume: number): void;
+    setEffectVolume(volume: number): void;
+    setPlaybackRate(id: string, rate: number): void;
+    setGlobalPlaybackRate(rate: number): void;
+    faster(id: string, rate?: number): void;
+    slow(id: string, rate?: number): void;
+    fasterEffect(id: string, rate?: number): void;
+    slowEffect(id: string, rate?: number): void;
+    pauseAll(): void;
+    resumeAll(): void;
+}
