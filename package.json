@@ -1,0 +1,35 @@
+{
+  "name": "sounds-control",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc && rollup -c rollup.config.cjs",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hangell/sounds-control.git"
+  },
+  "keywords": [],
+  "author": "Rodrigo Rangel <rodrigo@hangell.org> (https://github.com/Hangell)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Hangell/sounds-control/issues"
+  },
+  "homepage": "https://github.com/Hangell/sounds-control#readme",
+  "devDependencies": {
+    "typescript": "^5.0.4",
+    "@types/node": "^20.1.2",
+    "rollup": "^3.0.0",
+    "rollup-plugin-typescript2": "^0.31.1",
+    "@rollup/plugin-commonjs": "^24.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-terser": "^0.4.0"
+  },
+  "dependencies": {
+    "tslib": "^2.6.2"
+  }
+}
