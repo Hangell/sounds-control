@@ -1,9 +1,9 @@
-const typescript = require('rollup-plugin-typescript2');
-const commonjs = require('@rollup/plugin-commonjs');
-const { nodeResolve } = require('@rollup/plugin-node-resolve');
-const terser = require('@rollup/plugin-terser');
+import typescript from 'rollup-plugin-typescript2';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import terser from '@rollup/plugin-terser';
 
-module.exports = {
+export default {
   input: 'src/index.ts',
   output: [
     {
@@ -24,11 +24,11 @@ module.exports = {
     }
   ],
   plugins: [
-    nodeResolve(),
+    resolve(),
     commonjs(),
     typescript({
-      useTsconfigDeclarationDir: true
+      tsconfig: './tsconfig.json'
     }),
-    terser() // Correção aqui: chamar terser() como uma função
+    terser()
   ]
 };

@@ -6,7 +6,7 @@
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc && rollup -c rollup.config.cjs",
+    "build": "tsc && rollup -c rollup.config.mjs",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -34,9 +34,7 @@
     "audio API",
     "sound effects",
     "music",
-    "media",
-    "Capacitor",
-    "Native Audio"
+    "media"
   ],
   "author": "Rodrigo Rangel <rodrigo@hangell.org> (https://github.com/Hangell)",
   "license": "MIT",
@@ -55,5 +53,6 @@
   },
   "dependencies": {
     "tslib": "^2.6.2"
-  }
+  },
+  "type": "module"
 }
