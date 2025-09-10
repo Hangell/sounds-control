@@ -1,4 +1,4 @@
-# 🎵 Sounds Control [![pt-BR](https://img.shields.io/badge/🇧🇷-Português-black)](README.pt.md) [![en](https://img.shields.io/badge/🇺🇸-English-green)](README.md)
+# 🎵 Sounds Control [![pt-BR](https://img.shields.io/badge/🇧🇷-Português-black)](README.pt.md) [![es](https://img.shields.io/badge/🇧🇷-Español-black)](README.es.md) [![en](https://img.shields.io/badge/🇺🇸-English-green)](README.md)
 
 <p align="center">
   <img src="./assets/sounds-control.png" alt="Sounds Control Logo">

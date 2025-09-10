@@ -1,46 +1,45 @@
-# 🎵 Sounds Control [![pt-BR](https://img.shields.io/badge/🇧🇷-Português-green)](README.pt.md) [![es](https://img.shields.io/badge/🇧🇷-Español-black)](README.es.md) [![en](https://img.shields.io/badge/🇺🇸-English-black)](README.md)
-
+# 🎵 Sounds Control [![pt-BR](https://img.shields.io/badge/🇧🇷-Português-black)](README.pt.md) [![es](https://img.shields.io/badge/🇧🇷-Español-green)](README.es.md) [![en](https://img.shields.io/badge/🇺🇸-English-black)](README.md)
 
 <p align="center">
-  <img src="./assets/sounds-control.png" alt="Logo do Sounds Control">
+  <img src="./assets/sounds-control.png" alt="Logo de Sounds Control">
   <br />
-  <strong>Uma biblioteca de áudio JavaScript/TypeScript versátil para controle avançado de som</strong>
+  <strong>Una biblioteca de audio JavaScript/TypeScript versátil para control avanzado de sonido</strong>
   <br />
-  Perfeita para jogos, aplicações web e desenvolvimento mobile
+  Perfecta para juegos, aplicaciones web y desarrollo móvil
 </p>
 
 <p align="center">
   <a href="https://www.npmjs.com/package/sounds-control">
-    <img src="https://badge.fury.io/js/sounds-control.svg" alt="versão npm" />
+    <img src="https://badge.fury.io/js/sounds-control.svg" alt="versión npm" />
   </a>
   <a href="https://www.npmjs.com/package/sounds-control">
-    <img src="https://img.shields.io/npm/dw/sounds-control.svg" alt="downloads npm/semana" />
+    <img src="https://img.shields.io/npm/dw/sounds-control.svg" alt="descargas npm/semana" />
   </a>
   <a href="https://www.npmjs.com/package/sounds-control">
-    <img src="https://img.shields.io/npm/dm/sounds-control.svg" alt="downloads npm/mês" />
+    <img src="https://img.shields.io/npm/dm/sounds-control.svg" alt="descargas npm/mes" />
   </a>
   <a href="https://github.com/hangell/sounds-control">
-    <img src="https://img.shields.io/github/license/hangell/sounds-control.svg" alt="licença" />
+    <img src="https://img.shields.io/github/license/hangell/sounds-control.svg" alt="licencia" />
   </a>
   <a href="https://github.com/hangell/sounds-control/stargazers">
-    <img src="https://img.shields.io/github/stars/hangell/sounds-control.svg?style=social" alt="Stars do GitHub" />
+    <img src="https://img.shields.io/github/stars/hangell/sounds-control.svg?style=social" alt="Estrellas de GitHub" />
   </a>
 </p>
 
 ## ✨ Características
 
-- 🎮 **Pronto para jogos**: Otimizado para aplicações de jogos com áudio de baixa latência
-- 📱 **Mobile-first**: Integração perfeita de áudio para ambientes móveis
-- ⚡ **Compatível com frameworks**: Funciona perfeitamente com Ionic, React Native, Vue, Angular e JavaScript vanilla
-- 🔄 **Controles avançados**: Loop, pausar, retomar, controle de velocidade e gerenciamento de volume
-- 🎯 **Sistema de efeitos**: Efeitos sonoros dedicados com controle de volume separado
-- 📦 **Suporte TypeScript**: Definições completas do TypeScript incluídas
-- 🌐 **Multiplataforma**: Suporte para Web, Android, iOS
-- 🎛️ **Web Audio API**: Construído na moderna Web Audio API para performance superior
+- 🎮 **Listo para juegos**: Optimizado para aplicaciones de juego con audio de baja latencia
+- 📱 **Mobile-first**: Integración perfecta de audio para entornos móviles
+- ⚡ **Compatible con frameworks**: Funciona perfectamente con Ionic, React Native, Vue, Angular y JavaScript vanilla
+- 🔄 **Controles avanzados**: Loop, pausar, reanudar, control de velocidad y gestión de volumen
+- 🎯 **Sistema de efectos**: Efectos de sonido dedicados con control de volumen separado
+- 📦 **Soporte TypeScript**: Definiciones completas de TypeScript incluidas
+- 🌐 **Multiplataforma**: Soporte para Web, Android, iOS
+- 🎛️ **Web Audio API**: Construido sobre la moderna Web Audio API para rendimiento superior
 
-## 🚀 Início Rápido
+## 🚀 Inicio Rápido
 
-### Instalação
+### Instalación
 
 ```bash
 npm install sounds-control
@@ -53,7 +52,7 @@ import { SoundsControl } from 'sounds-control';
 
 const soundsControl = new SoundsControl();
 
-// Carregar e tocar um som
+// Cargar y reproducir un sonido
 async function playMusic() {
   await soundsControl.loadSound('./assets/music.mp3', 'background-music');
   soundsControl.play('background-music');
@@ -62,126 +61,126 @@ async function playMusic() {
 playMusic();
 ```
 
-## 📖 Referência da API
+## 📖 Referencia de la API
 
-### Métodos Principais
+### Métodos Principales
 
 #### `loadSound(url: string, id: string): Promise<void>`
-Carrega um arquivo de áudio de uma URL e o decodifica para uso posterior.
+Carga un archivo de audio desde una URL y lo decodifica para uso posterior.
 
 ```javascript
 await soundsControl.loadSound('./sounds/explosion.mp3', 'explosion');
 ```
 
 #### `isSoundLoaded(id: string): boolean`
-Verifica se um som foi carregado e está pronto para tocar.
+Verifica si un sonido ha sido cargado y está listo para reproducir.
 
 ```javascript
 if (soundsControl.isSoundLoaded('explosion')) {
-  // Som está pronto para tocar
+  // El sonido está listo para reproducir
 }
 ```
 
 #### `play(id: string, startTime?: number): Promise<void>`
-Toca um som a partir de um tempo inicial especificado (em segundos).
+Reproduce un sonido desde un tiempo inicial especificado (en segundos).
 
 ```javascript
-// Tocar do início
+// Reproducir desde el inicio
 await soundsControl.play('background-music');
 
-// Tocar a partir de 30 segundos
+// Reproducir desde los 30 segundos
 await soundsControl.play('background-music', 30);
 ```
 
 #### `playEffect(id: string): Promise<void>`
-Toca um efeito sonoro usando o canal de áudio dedicado para efeitos.
+Reproduce un efecto de sonido usando el canal de audio dedicado para efectos.
 
 ```javascript
 await soundsControl.playEffect('coin-pickup');
 ```
 
 #### `stop(id: string): void`
-Para a reprodução de um som e armazena o tempo de pausa para posterior retomada.
+Detiene la reproducción de un sonido y almacena el tiempo de pausa para reanudación posterior.
 
 ```javascript
 soundsControl.stop('background-music');
 ```
 
 #### `loop(id: string, startTime?: number): void`
-Reproduz um som continuamente em loop a partir de um tempo inicial especificado.
+Reproduce un sonido continuamente en bucle desde un tiempo inicial especificado.
 
 ```javascript
 soundsControl.loop('ambient-sound');
 ```
 
-### Controle de Volume
+### Control de Volumen
 
 #### `setVolume(volume: number): void`
-Define o volume principal para todos os sons (0.0 a 1.0).
+Establece el volumen maestro para todos los sonidos (0.0 a 1.0).
 
 ```javascript
-soundsControl.setVolume(0.5); // Volume a 50%
+soundsControl.setVolume(0.5); // Volumen al 50%
 ```
 
 #### `setEffectVolume(volume: number): void`
-Define o volume apenas para efeitos sonoros (0.0 a 1.0).
+Establece el volumen solo para efectos de sonido (0.0 a 1.0).
 
 ```javascript
-soundsControl.setEffectVolume(0.8); // Volume a 80% para efeitos
+soundsControl.setEffectVolume(0.8); // Volumen al 80% para efectos
 ```
 
-### Controle de Taxa de Reprodução
+### Control de Velocidad de Reproducción
 
 #### `setPlaybackRate(id: string, rate: number): void`
-Define a taxa de reprodução para um som específico.
+Establece la velocidad de reproducción para un sonido específico.
 
 ```javascript
-soundsControl.setPlaybackRate('music', 1.5); // Velocidade 1.5x
+soundsControl.setPlaybackRate('music', 1.5); // Velocidad 1.5x
 ```
 
 #### `setGlobalPlaybackRate(rate: number): void`
-Define a taxa de reprodução para todos os sons atualmente tocando.
+Establece la velocidad de reproducción para todos los sonidos que se están reproduciendo actualmente.
 
 ```javascript
-soundsControl.setGlobalPlaybackRate(0.5); // Velocidade reduzida pela metade para todos os sons
+soundsControl.setGlobalPlaybackRate(0.5); // Velocidad a la mitad para todos los sonidos
 ```
 
 #### `faster(id: string, rate?: number): void`
-Faz um som tocar mais rápido (padrão: velocidade 1.5x).
+Hace que un sonido se reproduzca más rápido (por defecto: velocidad 1.5x).
 
 ```javascript
-soundsControl.faster('dialogue'); // Velocidade 1.5x
-soundsControl.faster('dialogue', 2.0); // Velocidade 2x
+soundsControl.faster('dialogue'); // Velocidad 1.5x
+soundsControl.faster('dialogue', 2.0); // Velocidad 2x
 ```
 
 #### `slow(id: string, rate?: number): void`
-Faz um som tocar mais devagar (padrão: velocidade 0.75x).
+Hace que un sonido se reproduzca más lento (por defecto: velocidad 0.75x).
 
 ```javascript
-soundsControl.slow('music'); // Velocidade 0.75x
+soundsControl.slow('music'); // Velocidad 0.75x
 ```
 
-### Controles Globais
+### Controles Globales
 
 #### `pauseAll(): void`
-Pausa todos os sons atualmente tocando e armazena seus tempos de pausa.
+Pausa todos los sonidos que se están reproduciendo actualmente y almacena sus tiempos de pausa.
 
 ```javascript
 soundsControl.pauseAll();
 ```
 
 #### `resumeAll(): void`
-Retoma todos os sons pausados a partir de seus tempos de pausa armazenados.
+Reanuda todos los sonidos pausados desde sus tiempos de pausa almacenados.
 
 ```javascript
 soundsControl.resumeAll();
 ```
 
-## 🔧 Integração com Frameworks
+## 🔧 Integración con Frameworks
 
 ### Angular / Ionic
 
-#### Configuração do Service
+#### Configuración del Service
 
 ```typescript
 // audio.service.ts
@@ -224,7 +223,7 @@ export class AudioService {
 }
 ```
 
-#### Uso no Component
+#### Uso en Component
 
 ```typescript
 // game.component.ts
@@ -240,11 +239,11 @@ export class GameComponent implements OnInit {
   constructor(private audioService: AudioService) {}
 
   async ngOnInit() {
-    // Carregar sons do jogo
+    // Cargar sonidos del juego
     await this.audioService.loadSound('./assets/background.mp3', 'bg-music');
     await this.audioService.loadSound('./assets/jump.mp3', 'jump-effect');
     
-    // Iniciar música de fundo
+    // Iniciar música de fondo
     this.audioService.play('bg-music');
   }
 
@@ -254,7 +253,7 @@ export class GameComponent implements OnInit {
 }
 ```
 
-#### Gerenciamento do Estado do App (Ionic)
+#### Gestión del Estado de la App (Ionic)
 
 ```typescript
 // app.component.ts
@@ -271,7 +270,7 @@ export class AppComponent implements OnInit {
   constructor(private audioService: AudioService) {}
 
   ngOnInit() {
-    // Gerenciar mudanças de estado do app para mobile
+    // Manejar cambios de estado de la app para móvil
     App.addListener('appStateChange', ({ isActive }) => {
       if (isActive) {
         this.audioService.resumeAll();
@@ -285,7 +284,7 @@ export class AppComponent implements OnInit {
 
 ### React
 
-#### Implementação baseada em Hook
+#### Implementación basada en Hook
 
 ```tsx
 import React, { useEffect, useState, useRef } from 'react';
@@ -300,7 +299,7 @@ const useAudio = () => {
     setIsLoaded(true);
 
     return () => {
-      // Limpeza ao desmontar
+      // Limpieza al desmontar
       soundsControlRef.current?.pauseAll();
     };
   }, []);
@@ -311,7 +310,7 @@ const useAudio = () => {
   };
 };
 
-// Component do Jogo
+// Componente del Juego
 const Game: React.FC = () => {
   const { soundsControl, isLoaded } = useAudio();
   const [soundsReady, setSoundsReady] = useState(false);
@@ -325,10 +324,10 @@ const Game: React.FC = () => {
         await soundsControl.loadSound('./assets/click.mp3', 'click');
         setSoundsReady(true);
         
-        // Iniciar música de fundo
+        // Iniciar música de fondo
         soundsControl.play('bg-music');
       } catch (error) {
-        console.error('Falha ao carregar sons:', error);
+        console.error('Error al cargar sonidos:', error);
       }
     };
 
@@ -344,7 +343,7 @@ const Game: React.FC = () => {
   return (
     <div className="game">
       <button onClick={handleClick} disabled={!soundsReady}>
-        {soundsReady ? 'Clique em mim!' : 'Carregando...'}
+        {soundsReady ? '¡Haz clic!' : 'Cargando...'}
       </button>
     </div>
   );
@@ -360,13 +359,13 @@ export default Game;
 ```vue
 <template>
   <div class="audio-player">
-    <button @click="playMusic" :disabled="!soundsReady">Tocar Música</button>
-    <button @click="playEffect" :disabled="!soundsReady">Tocar Efeito</button>
-    <button @click="pauseAll">Pausar Tudo</button>
-    <button @click="resumeAll">Retomar Tudo</button>
+    <button @click="playMusic" :disabled="!soundsReady">Reproducir Música</button>
+    <button @click="playEffect" :disabled="!soundsReady">Reproducir Efecto</button>
+    <button @click="pauseAll">Pausar Todo</button>
+    <button @click="resumeAll">Reanudar Todo</button>
     
     <div class="controls">
-      <label>Volume Principal: {{ volume }}</label>
+      <label>Volumen Principal: {{ volume }}</label>
       <input 
         type="range" 
         min="0" 
@@ -393,7 +392,7 @@ onMounted(async () => {
     await soundsControl.loadSound('./assets/beep.mp3', 'beep');
     soundsReady.value = true;
   } catch (error) {
-    console.error('Falha ao carregar sons:', error);
+    console.error('Error al cargar sonidos:', error);
   }
 });
 
@@ -423,9 +422,9 @@ const updateVolume = () => {
 </script>
 ```
 
-## 🎮 Exemplos de Desenvolvimento de Jogos
+## 🎮 Ejemplos de Desarrollo de Juegos
 
-### Gerenciador de Áudio Simples para Jogos
+### Gestor de Audio Simple para Juegos
 
 ```typescript
 class GameAudioManager {
@@ -439,7 +438,7 @@ class GameAudioManager {
   }
 
   private async init() {
-    // Carregar todos os sons do jogo
+    // Cargar todos los sonidos del juego
     const sounds = [
       { url: './assets/music/bg-music.mp3', id: 'bg-music' },
       { url: './assets/sfx/jump.mp3', id: 'jump' },
@@ -464,7 +463,7 @@ class GameAudioManager {
   }
 
   playCoinSound() {
-    this.soundsControl.faster('coin', 1.2); // Ligeiramente mais rápido para emoção
+    this.soundsControl.faster('coin', 1.2); // Ligeramente más rápido para emoción
     this.soundsControl.playEffect('coin');
   }
 
@@ -492,9 +491,9 @@ class GameAudioManager {
 }
 ```
 
-## 🛠️ Uso Avançado
+## 🛠️ Uso Avanzado
 
-### Carregamento Dinâmico de Sons
+### Carga Dinámica de Sonidos
 
 ```typescript
 class DynamicAudioLoader {
@@ -531,26 +530,26 @@ class DynamicAudioLoader {
 }
 ```
 
-## 📱 Considerações para Mobile
+## 📱 Consideraciones para Móvil
 
-### Ativação do Contexto de Áudio no iOS
+### Activación del Contexto de Audio en iOS
 
 ```typescript
-// Para iOS, o contexto de áudio precisa de interação do usuário para iniciar
+// Para iOS, el contexto de audio necesita interacción del usuario para iniciar
 const initializeAudio = async () => {
   const soundsControl = new SoundsControl();
   
-  // Adicionar um listener de interação do usuário
+  // Agregar un listener de interacción del usuario
   const activateAudio = async () => {
     try {
-      // Carregar um som silencioso curto para ativar o contexto de áudio
+      // Cargar un sonido silencioso corto para activar el contexto de audio
       await soundsControl.loadSound('./assets/silence.mp3', 'silence');
       await soundsControl.play('silence');
       
       document.removeEventListener('touchstart', activateAudio);
       document.removeEventListener('click', activateAudio);
     } catch (error) {
-      console.error('Falha ao ativar áudio:', error);
+      console.error('Error al activar audio:', error);
     }
   };
 
@@ -559,32 +558,32 @@ const initializeAudio = async () => {
 };
 ```
 
-## 🔧 Solução de Problemas
+## 🔧 Solución de Problemas
 
-### Problemas Comuns
+### Problemas Comunes
 
-**Áudio não toca no mobile:**
-- Certifique-se de que o áudio é acionado por interação do usuário
-- Verifique se o dispositivo está no modo silencioso
-- Verifique se os formatos de arquivo de áudio são suportados
+**El audio no se reproduce en móvil:**
+- Asegúrate de que el audio sea activado por interacción del usuario
+- Verifica si el dispositivo está en modo silencioso
+- Verifica que los formatos de archivo de audio sean compatibles
 
-**Problemas de performance:**
-- Pré-carregue sons usados frequentemente
-- Use formatos de áudio comprimidos (MP3, AAC)
-- Limite fontes de áudio simultâneas
+**Problemas de rendimiento:**
+- Pre-carga sonidos usados frecuentemente
+- Usa formatos de audio comprimidos (MP3, AAC)
+- Limita las fuentes de audio simultáneas
 
-**Uso de memória:**
-- Descarregue buffers de áudio não utilizados
-- Use arquivos de áudio mais curtos para efeitos
-- Considere streaming para faixas de música longas
+**Uso de memoria:**
+- Descarga buffers de audio no utilizados
+- Usa archivos de audio más cortos para efectos
+- Considera streaming para pistas de música largas
 
-## 🧪 Testes
+## 🧪 Pruebas
 
 ```typescript
-// Exemplo de configuração de teste com Jest
+// Ejemplo de configuración de pruebas con Jest
 import { SoundsControl } from 'sounds-control';
 
-// Mock AudioContext para testes
+// Mock AudioContext para pruebas
 global.AudioContext = jest.fn().mockImplementation(() => ({
   createGain: jest.fn(() => ({
     connect: jest.fn(),
@@ -608,23 +607,23 @@ describe('SoundsControl', () => {
     soundsControl = new SoundsControl();
   });
 
-  test('deve inicializar sem erros', () => {
+  test('debería inicializar sin errores', () => {
     expect(soundsControl).toBeInstanceOf(SoundsControl);
   });
 
-  // Adicionar mais testes...
+  // Agregar más pruebas...
 });
 ```
 
-## 📄 Licença
+## 📄 Licencia
 
-Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+Este proyecto está licenciado bajo la Licencia MIT - consulta el archivo [LICENSE](LICENSE) para más detalles.
 
-## 🤝 Contribuindo
+## 🤝 Contribuir
 
-Contribuições são bem-vindas! Sinta-se à vontade para enviar um Pull Request. Para grandes mudanças, por favor abra uma issue primeiro para discutir o que você gostaria de mudar.
+¡Las contribuciones son bienvenidas! Siéntete libre de enviar un Pull Request. Para cambios importantes, por favor abre primero un issue para discutir lo que te gustaría cambiar.
 
-### Configuração de Desenvolvimento
+### Configuración de Desarrollo
 
 ```bash
 git clone https://github.com/hangell/sounds-control.git
@@ -634,13 +633,13 @@ npm run build
 npm test
 ```
 
-## 💖 Apoio
+## 💖 Apoyo
 
-Se você achou esta biblioteca útil, por favor considere:
+Si encontraste útil esta biblioteca, por favor considera:
 
-- ⭐ Dar uma estrela no GitHub
-- 📝 Relatar problemas ou solicitar recursos
-- 💰 Apoiar via Pix: rodrigo@hangell.org
+- ⭐ Darle una estrella en GitHub
+- 📝 Reportar problemas o solicitar características
+- 💰 Apoyar vía Pix: rodrigo@hangell.org
 
 ## 👨‍💻 Autor
 <div align="center">
@@ -649,7 +648,7 @@ Se você achou esta biblioteca útil, por favor considere:
 
 **Rodrigo Rangel**
 
-[![Site](https://img.shields.io/badge/website-000000?style=for-the-badge&logo=About.me&logoColor=white)](https://hangell.org)
+[![Sitio Web](https://img.shields.io/badge/website-000000?style=for-the-badge&logo=About.me&logoColor=white)](https://hangell.org)
 [![Google Play](https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/dev?id=5606456325281613718)
 [![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/channel/UC8_zG7RFM2aMhI-p-6zmixw)
 [![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/hangell.org)
@@ -660,5 +659,4 @@ Se você achou esta biblioteca útil, por favor considere:
 ---
 
 <p align="center">
-  Feito com ❤️ para a comunidade de desenvolvedores
-</p>
+  Hecho con ❤️ para la comunidad de desarrolladores
