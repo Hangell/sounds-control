@@ -1,58 +1,59 @@
-# 🎵 Sounds Control [![pt-BR](https://img.shields.io/badge/🇧🇷-Português-black)](README.pt.md) [![en](https://img.shields.io/badge/🇺🇸-English-green)](README.md)
+# 🎵 Sounds Control [![pt-BR](https://img.shields.io/badge/🇧🇷-Português-green)](README.pt.md) [![en](https://img.shields.io/badge/🇺🇸-English-black)](README.md)
+
 
 <p align="center">
-  <img src="./assets/sounds-control.png" alt="Sounds Control Logo">
+  <img src="./assets/sounds-control.png" alt="Logo do Sounds Control">
   <br />
-  <strong>A versatile JavaScript/TypeScript audio library for advanced sound control</strong>
+  <strong>Uma biblioteca de áudio JavaScript/TypeScript versátil para controle avançado de som</strong>
   <br />
-  Perfect for games, web applications, and mobile development
+  Perfeita para jogos, aplicações web e desenvolvimento mobile
 </p>
 
 <p align="center">
   <a href="https://www.npmjs.com/package/sounds-control">
-    <img src="https://badge.fury.io/js/sounds-control.svg" alt="npm version" />
+    <img src="https://badge.fury.io/js/sounds-control.svg" alt="versão npm" />
   </a>
   <a href="https://www.npmjs.com/package/sounds-control">
-    <img src="https://img.shields.io/npm/dw/sounds-control.svg" alt="npm downloads/week" />
+    <img src="https://img.shields.io/npm/dw/sounds-control.svg" alt="downloads npm/semana" />
   </a>
   <a href="https://www.npmjs.com/package/sounds-control">
-    <img src="https://img.shields.io/npm/dm/sounds-control.svg" alt="npm downloads/month" />
+    <img src="https://img.shields.io/npm/dm/sounds-control.svg" alt="downloads npm/mês" />
   </a>
   <a href="https://github.com/hangell/sounds-control">
-    <img src="https://img.shields.io/github/license/hangell/sounds-control.svg" alt="license" />
+    <img src="https://img.shields.io/github/license/hangell/sounds-control.svg" alt="licença" />
   </a>
   <a href="https://github.com/hangell/sounds-control/stargazers">
-    <img src="https://img.shields.io/github/stars/hangell/sounds-control.svg?style=social" alt="GitHub stars" />
+    <img src="https://img.shields.io/github/stars/hangell/sounds-control.svg?style=social" alt="Stars do GitHub" />
   </a>
 </p>
 
-## ✨ Features
+## ✨ Características
 
-- 🎮 **Game-ready**: Optimized for gaming applications with low-latency audio
-- 📱 **Mobile-first**: Seamless audio integration for mobile environments
-- ⚡ **Framework compatible**: Works perfectly with Ionic, React Native, Vue, Angular, and vanilla JavaScript
-- 🔄 **Advanced controls**: Loop, pause, resume, speed control, and volume management
-- 🎯 **Effect system**: Dedicated sound effects with separate volume control
-- 📦 **TypeScript support**: Full TypeScript definitions included
-- 🌐 **Cross-platform**: Web, Android, iOS support
-- 🎛️ **Web Audio API**: Built on modern Web Audio API for superior performance
+- 🎮 **Pronto para jogos**: Otimizado para aplicações de jogos com áudio de baixa latência
+- 📱 **Mobile-first**: Integração perfeita de áudio para ambientes móveis
+- ⚡ **Compatível com frameworks**: Funciona perfeitamente com Ionic, React Native, Vue, Angular e JavaScript vanilla
+- 🔄 **Controles avançados**: Loop, pausar, retomar, controle de velocidade e gerenciamento de volume
+- 🎯 **Sistema de efeitos**: Efeitos sonoros dedicados com controle de volume separado
+- 📦 **Suporte TypeScript**: Definições completas do TypeScript incluídas
+- 🌐 **Multiplataforma**: Suporte para Web, Android, iOS
+- 🎛️ **Web Audio API**: Construído na moderna Web Audio API para performance superior
 
-## 🚀 Quick Start
+## 🚀 Início Rápido
 
-### Installation
+### Instalação
 
 ```bash
 npm install sounds-control
 ```
 
-### Basic Usage
+### Uso Básico
 
 ```javascript
 import { SoundsControl } from 'sounds-control';
 
 const soundsControl = new SoundsControl();
 
-// Load and play a sound
+// Carregar e tocar um som
 async function playMusic() {
   await soundsControl.loadSound('./assets/music.mp3', 'background-music');
   soundsControl.play('background-music');
@@ -61,126 +62,126 @@ async function playMusic() {
 playMusic();
 ```
 
-## 📖 API Reference
+## 📖 Referência da API
 
-### Core Methods
+### Métodos Principais
 
 #### `loadSound(url: string, id: string): Promise<void>`
-Loads an audio file from a URL and decodes it for later use.
+Carrega um arquivo de áudio de uma URL e o decodifica para uso posterior.
 
 ```javascript
 await soundsControl.loadSound('./sounds/explosion.mp3', 'explosion');
 ```
 
 #### `isSoundLoaded(id: string): boolean`
-Checks if a sound has been loaded and is ready to play.
+Verifica se um som foi carregado e está pronto para tocar.
 
 ```javascript
 if (soundsControl.isSoundLoaded('explosion')) {
-  // Sound is ready to play
+  // Som está pronto para tocar
 }
 ```
 
 #### `play(id: string, startTime?: number): Promise<void>`
-Plays a sound from a specified start time (in seconds).
+Toca um som a partir de um tempo inicial especificado (em segundos).
 
 ```javascript
-// Play from beginning
+// Tocar do início
 await soundsControl.play('background-music');
 
-// Play from 30 seconds
+// Tocar a partir de 30 segundos
 await soundsControl.play('background-music', 30);
 ```
 
 #### `playEffect(id: string): Promise<void>`
-Plays a sound effect using the dedicated effects audio channel.
+Toca um efeito sonoro usando o canal de áudio dedicado para efeitos.
 
 ```javascript
 await soundsControl.playEffect('coin-pickup');
 ```
 
 #### `stop(id: string): void`
-Stops the playback of a sound and stores the pause time for later resumption.
+Para a reprodução de um som e armazena o tempo de pausa para posterior retomada.
 
 ```javascript
 soundsControl.stop('background-music');
 ```
 
 #### `loop(id: string, startTime?: number): void`
-Loops a sound continuously from a specified start time.
+Reproduz um som continuamente em loop a partir de um tempo inicial especificado.
 
 ```javascript
 soundsControl.loop('ambient-sound');
 ```
 
-### Volume Control
+### Controle de Volume
 
 #### `setVolume(volume: number): void`
-Sets the master volume for all sounds (0.0 to 1.0).
+Define o volume principal para todos os sons (0.0 a 1.0).
 
 ```javascript
-soundsControl.setVolume(0.5); // 50% volume
+soundsControl.setVolume(0.5); // Volume a 50%
 ```
 
 #### `setEffectVolume(volume: number): void`
-Sets the volume for sound effects only (0.0 to 1.0).
+Define o volume apenas para efeitos sonoros (0.0 a 1.0).
 
 ```javascript
-soundsControl.setEffectVolume(0.8); // 80% volume for effects
+soundsControl.setEffectVolume(0.8); // Volume a 80% para efeitos
 ```
 
-### Playback Rate Control
+### Controle de Taxa de Reprodução
 
 #### `setPlaybackRate(id: string, rate: number): void`
-Sets the playback rate for a specific sound.
+Define a taxa de reprodução para um som específico.
 
 ```javascript
-soundsControl.setPlaybackRate('music', 1.5); // 1.5x speed
+soundsControl.setPlaybackRate('music', 1.5); // Velocidade 1.5x
 ```
 
 #### `setGlobalPlaybackRate(rate: number): void`
-Sets the playback rate for all currently playing sounds.
+Define a taxa de reprodução para todos os sons atualmente tocando.
 
 ```javascript
-soundsControl.setGlobalPlaybackRate(0.5); // Half speed for all sounds
+soundsControl.setGlobalPlaybackRate(0.5); // Velocidade reduzida pela metade para todos os sons
 ```
 
 #### `faster(id: string, rate?: number): void`
-Makes a sound play faster (default: 1.5x speed).
+Faz um som tocar mais rápido (padrão: velocidade 1.5x).
 
 ```javascript
-soundsControl.faster('dialogue'); // 1.5x speed
-soundsControl.faster('dialogue', 2.0); // 2x speed
+soundsControl.faster('dialogue'); // Velocidade 1.5x
+soundsControl.faster('dialogue', 2.0); // Velocidade 2x
 ```
 
 #### `slow(id: string, rate?: number): void`
-Makes a sound play slower (default: 0.75x speed).
+Faz um som tocar mais devagar (padrão: velocidade 0.75x).
 
 ```javascript
-soundsControl.slow('music'); // 0.75x speed
+soundsControl.slow('music'); // Velocidade 0.75x
 ```
 
-### Global Controls
+### Controles Globais
 
 #### `pauseAll(): void`
-Pauses all currently playing sounds and stores their pause times.
+Pausa todos os sons atualmente tocando e armazena seus tempos de pausa.
 
 ```javascript
 soundsControl.pauseAll();
 ```
 
 #### `resumeAll(): void`
-Resumes all paused sounds from their stored pause times.
+Retoma todos os sons pausados a partir de seus tempos de pausa armazenados.
 
 ```javascript
 soundsControl.resumeAll();
 ```
 
-## 🔧 Framework Integration
+## 🔧 Integração com Frameworks
 
 ### Angular / Ionic
 
-#### Service Setup
+#### Configuração do Service
 
 ```typescript
 // audio.service.ts
@@ -223,7 +224,7 @@ export class AudioService {
 }
 ```
 
-#### Component Usage
+#### Uso no Component
 
 ```typescript
 // game.component.ts
@@ -239,11 +240,11 @@ export class GameComponent implements OnInit {
   constructor(private audioService: AudioService) {}
 
   async ngOnInit() {
-    // Load game sounds
+    // Carregar sons do jogo
     await this.audioService.loadSound('./assets/background.mp3', 'bg-music');
     await this.audioService.loadSound('./assets/jump.mp3', 'jump-effect');
     
-    // Start background music
+    // Iniciar música de fundo
     this.audioService.play('bg-music');
   }
 
@@ -253,7 +254,7 @@ export class GameComponent implements OnInit {
 }
 ```
 
-#### App State Management (Ionic)
+#### Gerenciamento do Estado do App (Ionic)
 
 ```typescript
 // app.component.ts
@@ -270,7 +271,7 @@ export class AppComponent implements OnInit {
   constructor(private audioService: AudioService) {}
 
   ngOnInit() {
-    // Handle app state changes for mobile
+    // Gerenciar mudanças de estado do app para mobile
     App.addListener('appStateChange', ({ isActive }) => {
       if (isActive) {
         this.audioService.resumeAll();
@@ -284,7 +285,7 @@ export class AppComponent implements OnInit {
 
 ### React
 
-#### Hook-based Implementation
+#### Implementação baseada em Hook
 
 ```tsx
 import React, { useEffect, useState, useRef } from 'react';
@@ -299,7 +300,7 @@ const useAudio = () => {
     setIsLoaded(true);
 
     return () => {
-      // Cleanup on unmount
+      // Limpeza ao desmontar
       soundsControlRef.current?.pauseAll();
     };
   }, []);
@@ -310,7 +311,7 @@ const useAudio = () => {
   };
 };
 
-// Game Component
+// Component do Jogo
 const Game: React.FC = () => {
   const { soundsControl, isLoaded } = useAudio();
   const [soundsReady, setSoundsReady] = useState(false);
@@ -324,10 +325,10 @@ const Game: React.FC = () => {
         await soundsControl.loadSound('./assets/click.mp3', 'click');
         setSoundsReady(true);
         
-        // Start background music
+        // Iniciar música de fundo
         soundsControl.play('bg-music');
       } catch (error) {
-        console.error('Failed to load sounds:', error);
+        console.error('Falha ao carregar sons:', error);
       }
     };
 
@@ -343,7 +344,7 @@ const Game: React.FC = () => {
   return (
     <div className="game">
       <button onClick={handleClick} disabled={!soundsReady}>
-        {soundsReady ? 'Click Me!' : 'Loading...'}
+        {soundsReady ? 'Clique em mim!' : 'Carregando...'}
       </button>
     </div>
   );
@@ -359,13 +360,13 @@ export default Game;
 ```vue
 <template>
   <div class="audio-player">
-    <button @click="playMusic" :disabled="!soundsReady">Play Music</button>
-    <button @click="playEffect" :disabled="!soundsReady">Play Effect</button>
-    <button @click="pauseAll">Pause All</button>
-    <button @click="resumeAll">Resume All</button>
+    <button @click="playMusic" :disabled="!soundsReady">Tocar Música</button>
+    <button @click="playEffect" :disabled="!soundsReady">Tocar Efeito</button>
+    <button @click="pauseAll">Pausar Tudo</button>
+    <button @click="resumeAll">Retomar Tudo</button>
     
     <div class="controls">
-      <label>Master Volume: {{ volume }}</label>
+      <label>Volume Principal: {{ volume }}</label>
       <input 
         type="range" 
         min="0" 
@@ -392,7 +393,7 @@ onMounted(async () => {
     await soundsControl.loadSound('./assets/beep.mp3', 'beep');
     soundsReady.value = true;
   } catch (error) {
-    console.error('Failed to load sounds:', error);
+    console.error('Falha ao carregar sons:', error);
   }
 });
 
@@ -422,9 +423,9 @@ const updateVolume = () => {
 </script>
 ```
 
-## 🎮 Game Development Examples
+## 🎮 Exemplos de Desenvolvimento de Jogos
 
-### Simple Game Audio Manager
+### Gerenciador de Áudio Simples para Jogos
 
 ```typescript
 class GameAudioManager {
@@ -438,7 +439,7 @@ class GameAudioManager {
   }
 
   private async init() {
-    // Load all game sounds
+    // Carregar todos os sons do jogo
     const sounds = [
       { url: './assets/music/bg-music.mp3', id: 'bg-music' },
       { url: './assets/sfx/jump.mp3', id: 'jump' },
@@ -463,7 +464,7 @@ class GameAudioManager {
   }
 
   playCoinSound() {
-    this.soundsControl.faster('coin', 1.2); // Slightly faster for excitement
+    this.soundsControl.faster('coin', 1.2); // Ligeiramente mais rápido para emoção
     this.soundsControl.playEffect('coin');
   }
 
@@ -491,9 +492,9 @@ class GameAudioManager {
 }
 ```
 
-## 🛠️ Advanced Usage
+## 🛠️ Uso Avançado
 
-### Dynamic Sound Loading
+### Carregamento Dinâmico de Sons
 
 ```typescript
 class DynamicAudioLoader {
@@ -530,26 +531,26 @@ class DynamicAudioLoader {
 }
 ```
 
-## 📱 Mobile Considerations
+## 📱 Considerações para Mobile
 
-### iOS Audio Context Activation
+### Ativação do Contexto de Áudio no iOS
 
 ```typescript
-// For iOS, audio context needs user interaction to start
+// Para iOS, o contexto de áudio precisa de interação do usuário para iniciar
 const initializeAudio = async () => {
   const soundsControl = new SoundsControl();
   
-  // Add a user interaction listener
+  // Adicionar um listener de interação do usuário
   const activateAudio = async () => {
     try {
-      // Load a short silent sound to activate audio context
+      // Carregar um som silencioso curto para ativar o contexto de áudio
       await soundsControl.loadSound('./assets/silence.mp3', 'silence');
       await soundsControl.play('silence');
       
       document.removeEventListener('touchstart', activateAudio);
       document.removeEventListener('click', activateAudio);
     } catch (error) {
-      console.error('Failed to activate audio:', error);
+      console.error('Falha ao ativar áudio:', error);
     }
   };
 
@@ -558,32 +559,32 @@ const initializeAudio = async () => {
 };
 ```
 
-## 🔧 Troubleshooting
+## 🔧 Solução de Problemas
 
-### Common Issues
+### Problemas Comuns
 
-**Audio not playing on mobile:**
-- Ensure audio is triggered by user interaction
-- Check if device is in silent mode
-- Verify audio file formats are supported
+**Áudio não toca no mobile:**
+- Certifique-se de que o áudio é acionado por interação do usuário
+- Verifique se o dispositivo está no modo silencioso
+- Verifique se os formatos de arquivo de áudio são suportados
 
-**Performance issues:**
-- Preload frequently used sounds
-- Use compressed audio formats (MP3, AAC)
-- Limit concurrent audio sources
+**Problemas de performance:**
+- Pré-carregue sons usados frequentemente
+- Use formatos de áudio comprimidos (MP3, AAC)
+- Limite fontes de áudio simultâneas
 
-**Memory usage:**
-- Unload unused audio buffers
-- Use shorter audio files for effects
-- Consider streaming for long music tracks
+**Uso de memória:**
+- Descarregue buffers de áudio não utilizados
+- Use arquivos de áudio mais curtos para efeitos
+- Considere streaming para faixas de música longas
 
-## 🧪 Testing
+## 🧪 Testes
 
 ```typescript
-// Example test setup with Jest
+// Exemplo de configuração de teste com Jest
 import { SoundsControl } from 'sounds-control';
 
-// Mock AudioContext for testing
+// Mock AudioContext para testes
 global.AudioContext = jest.fn().mockImplementation(() => ({
   createGain: jest.fn(() => ({
     connect: jest.fn(),
@@ -607,23 +608,23 @@ describe('SoundsControl', () => {
     soundsControl = new SoundsControl();
   });
 
-  test('should initialize without errors', () => {
+  test('deve inicializar sem erros', () => {
     expect(soundsControl).toBeInstanceOf(SoundsControl);
   });
 
-  // Add more tests...
+  // Adicionar mais testes...
 });
 ```
 
-## 📄 License
+## 📄 Licença
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
 
-## 🤝 Contributing
+## 🤝 Contribuindo
 
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+Contribuições são bem-vindas! Sinta-se à vontade para enviar um Pull Request. Para grandes mudanças, por favor abra uma issue primeiro para discutir o que você gostaria de mudar.
 
-### Development Setup
+### Configuração de Desenvolvimento
 
 ```bash
 git clone https://github.com/hangell/sounds-control.git
@@ -633,22 +634,22 @@ npm run build
 npm test
 ```
 
-## 💖 Support
+## 💖 Apoio
 
-If you found this library helpful, please consider:
+Se você achou esta biblioteca útil, por favor considere:
 
-- ⭐ Giving it a star on GitHub
-- 📝 Reporting issues or requesting features
-- 💰 Supporting via Pix: rodrigo@hangell.org
+- ⭐ Dar uma estrela no GitHub
+- 📝 Relatar problemas ou solicitar recursos
+- 💰 Apoiar via Pix: rodrigo@hangell.org
 
-## 👨‍💻 Author
+## 👨‍💻 Autor
 <div align="center">
 
 ![Rodrigo Rangel](https://avatars.githubusercontent.com/u/53544561?v=4)
 
 **Rodrigo Rangel**
 
-[![Website](https://img.shields.io/badge/website-000000?style=for-the-badge&logo=About.me&logoColor=white)](https://hangell.org)
+[![Site](https://img.shields.io/badge/website-000000?style=for-the-badge&logo=About.me&logoColor=white)](https://hangell.org)
 [![Google Play](https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/dev?id=5606456325281613718)
 [![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/channel/UC8_zG7RFM2aMhI-p-6zmixw)
 [![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/hangell.org)
@@ -659,5 +660,5 @@ If you found this library helpful, please consider:
 ---
 
 <p align="center">
-  Made with ❤️ for the developer community
+  Feito com ❤️ para a comunidade de desenvolvedores
 </p>
