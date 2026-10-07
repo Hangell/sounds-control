@@ -1,1 +1,1 @@
-export * from './sounds-control';
+export * from './sounds-control.js';

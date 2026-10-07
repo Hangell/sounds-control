@@ -1,13 +1,25 @@
 {
   "name": "sounds-control",
-  "version": "1.0.1",
-  "description": "A versatile JavaScript/TypeScript audio library designed to provide advanced sound control functions, making it ideal for games and various web applications.",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.esm.js",
+  "version": "1.1.0",
+  "description": "Framework-independent Web Audio control for JavaScript and TypeScript: music, effects, pause/resume, seek, volume and resource cleanup.",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc && rollup -c rollup.config.mjs",
-    "prepublishOnly": "npm run build"
+    "build": "node scripts/clean.cjs && tsc -p tsconfig.json && rollup -c",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p config/tsconfig.test.json",
+    "lint": "eslint . --max-warnings=0",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "prepare": "node scripts/prepare.cjs",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "test:coverage": "npm run build && node --test --experimental-test-coverage --test-coverage-include=\"dist/sounds-control.js\" --test-coverage-lines=90 --test-coverage-functions=90 --test-coverage-branches=85 tests/*.test.mjs",
+    "test:package": "node tests/package.mjs",
+    "check": "npm run lint && npm run format:check && npm run typecheck && npm run test:coverage && npm run test:package",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run check",
+    "test:browser": "npm run build && node tests/browser/smoke.mjs"
   },
   "repository": {
     "type": "git",
@@ -16,25 +28,15 @@
   "keywords": [
     "audio",
     "sound",
-    "sound control",
-    "audio control",
-    "JavaScript",
-    "TypeScript",
-    "web audio",
-    "audio library",
-    "game audio",
-    "mobile audio",
-    "Ionic",
-    "React Native",
-    "Vue",
-    "Angular",
-    "web development",
-    "mobile development",
-    "cross-platform",
-    "audio API",
-    "sound effects",
-    "music",
-    "media"
+    "web-audio",
+    "javascript",
+    "typescript",
+    "ionic",
+    "react",
+    "vue",
+    "angular",
+    "sound-effects",
+    "music"
   ],
   "author": "Rodrigo Rangel <rodrigo@hangell.org> (https://github.com/Hangell)",
   "license": "MIT",
@@ -43,16 +45,48 @@
   },
   "homepage": "https://github.com/Hangell/sounds-control#readme",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^24.0.0",
-    "@rollup/plugin-node-resolve": "^15.0.0",
-    "@rollup/plugin-terser": "0.4.4",
-    "@types/node": "^20.1.2",
-    "rollup": "^3.0.0",
-    "rollup-plugin-typescript2": "^0.31.1",
-    "typescript": "^5.0.4"
+    "@eslint/js": "10.0.1",
+    "@types/node": "22.20.5",
+    "eslint": "10.12.0",
+    "eslint-config-prettier": "10.1.8",
+    "husky": "9.1.7",
+    "lint-staged": "16.4.0",
+    "playwright": "1.63.0",
+    "prettier": "3.9.9",
+    "rollup": "^4.0.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.71.1"
   },
-  "dependencies": {
-    "tslib": "^2.6.2"
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
   },
-  "type": "module"
+  "unpkg": "dist/index.umd.cjs",
+  "jsdelivr": "dist/index.umd.cjs",
+  "files": [
+    "dist/",
+    "docs/",
+    "assets/",
+    "README.pt.md",
+    "README.es.md",
+    "CONTRIBUTING.md",
+    "CODE_OF_CONDUCT.md",
+    "SECURITY.md",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22.14"
+  },
+  "lint-staged": {
+    "*.{ts,js,cjs,mjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": "prettier --write"
+  }
 }

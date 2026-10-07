@@ -1,663 +1,236 @@
-# 🎵 Sounds Control [![pt-BR](https://img.shields.io/badge/🇧🇷-Português-black)](README.pt.md) [![es](https://img.shields.io/badge/🇧🇷-Español-black)](README.es.md) [![en](https://img.shields.io/badge/🇺🇸-English-green)](README.md)
+# 🎵 Sounds Control
+
+[🇺🇸 English](https://github.com/Hangell/sounds-control/blob/master/README.md) · [🇧🇷 Português (Brasil)](https://github.com/Hangell/sounds-control/blob/master/docs/pt-br/README.md) · [🇮🇳 हिन्दी](https://github.com/Hangell/sounds-control/blob/master/docs/hi/README.md) · [🇪🇸 Español](https://github.com/Hangell/sounds-control/blob/master/docs/es/README.md) · [🇷🇺 Русский](https://github.com/Hangell/sounds-control/blob/master/docs/ru/README.md) · [🇨🇳 简体中文](https://github.com/Hangell/sounds-control/blob/master/docs/zh/README.md)
 
 <p align="center">
-  <img src="./assets/sounds-control.png" alt="Sounds Control Logo">
-  <br />
-  <strong>A versatile JavaScript/TypeScript audio library for advanced sound control</strong>
-  <br />
-  Perfect for games, web applications, and mobile development
+  <img src="https://raw.githubusercontent.com/Hangell/sounds-control/master/assets/sounds-control.png" alt="Sounds Control logo" width="280" />
 </p>
 
-<p align="center">
-  <a href="https://www.npmjs.com/package/sounds-control">
-    <img src="https://badge.fury.io/js/sounds-control.svg" alt="npm version" />
-  </a>
-  <a href="https://www.npmjs.com/package/sounds-control">
-    <img src="https://img.shields.io/npm/dw/sounds-control.svg" alt="npm downloads/week" />
-  </a>
-  <a href="https://www.npmjs.com/package/sounds-control">
-    <img src="https://img.shields.io/npm/dm/sounds-control.svg" alt="npm downloads/month" />
-  </a>
-  <a href="https://github.com/hangell/sounds-control">
-    <img src="https://img.shields.io/github/license/hangell/sounds-control.svg" alt="license" />
-  </a>
-  <a href="https://github.com/hangell/sounds-control/stargazers">
-    <img src="https://img.shields.io/github/stars/hangell/sounds-control.svg?style=social" alt="GitHub stars" />
-  </a>
-</p>
+[![npm](https://img.shields.io/npm/v/sounds-control)](https://www.npmjs.com/package/sounds-control) [![CI](https://github.com/Hangell/sounds-control/actions/workflows/ci.yml/badge.svg)](https://github.com/Hangell/sounds-control/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Hangell/sounds-control/blob/master/LICENSE)
 
-## ✨ Features
+Framework-independent Web Audio control for **JavaScript and TypeScript**. Use the same API in **Ionic, React, Vue, Angular**, games and vanilla web applications. No runtime dependencies.
 
-- 🎮 **Game-ready**: Optimized for gaming applications with low-latency audio
-- 📱 **Mobile-first**: Seamless audio integration for mobile environments
-- ⚡ **Framework compatible**: Works perfectly with Ionic, React Native, Vue, Angular, and vanilla JavaScript
-- 🔄 **Advanced controls**: Loop, pause, resume, speed control, and volume management
-- 🎯 **Effect system**: Dedicated sound effects with separate volume control
-- 📦 **TypeScript support**: Full TypeScript definitions included
-- 🌐 **Cross-platform**: Web, Android, iOS support
-- 🎛️ **Web Audio API**: Built on modern Web Audio API for superior performance
+## Features
 
-## 🚀 Quick Start
+- Cached, deduplicated audio loading, batch preload, cancellation and HTTP error handling.
+- Multiple independent tracks with pause/resume, loop, seek and position/duration queries.
+- Overlapping one-shot effects with a separate volume bus and explicit cleanup.
+- Per-sound/global speed, music/effect/master volume, mute and unmute.
+- Lazy AudioContext creation, SSR-safe imports, injected context/fetch and deterministic disposal.
+- ESM, CommonJS, browser UMD and TypeScript declarations.
 
-### Installation
+## Install
 
-```bash
+```sh
 npm install sounds-control
 ```
 
-### Basic Usage
+Version 1.1.0 described here is available after a maintainer publishes it; installing from npm before that release retrieves the currently published version. To try the repository version, build it and install its `npm pack` tarball.
 
-```javascript
+Playback requires a browser or WebView with Web Audio and Fetch. Ionic uses its WebView. Native React Native and Node.js audio are outside the scope. SSR can import the library safely; create/play on the client. Node.js 22.14+ is required for development tooling.
+
+## Quick start (JavaScript or TypeScript)
+
+```ts
 import { SoundsControl } from 'sounds-control';
 
-const soundsControl = new SoundsControl();
+const sounds = new SoundsControl();
+// Call unlock directly inside a user interaction, before network awaits.
+document
+  .querySelector<HTMLButtonElement>('#play')!
+  .addEventListener('click', async () => {
+    try {
+      await sounds.unlock();
+      await sounds.loadSounds([
+        { id: 'music', url: '/audio/music.mp3' },
+        { id: 'click', url: '/audio/click.wav' },
+      ]);
+      sounds.setVolume(0.5);
+      await sounds.loop('music');
+      await sounds.playEffect('click');
+    } catch (error) {
+      console.error('Audio could not start', error);
+    }
+  });
 
-// Load and play a sound
-async function playMusic() {
-  await soundsControl.loadSound('./assets/music.mp3', 'background-music');
-  soundsControl.play('background-music');
-}
-
-playMusic();
+// If you do not preload, loadSound('/audio/music.mp3', 'music') loads one asset.
+// When leaving the screen: await sounds.dispose().
 ```
 
-## 📖 API Reference
+For plain JavaScript, remove the `<HTMLButtonElement>` generic and the `!` assertion. Asset URLs follow your framework's public/static asset convention. Cross-origin assets need appropriate CORS headers. Decoded audio is kept in memory; this is not a streaming player for large files. Supported codecs depend on the browser. Browser autoplay rules still apply; [`unlock()` resumes the context](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/resume).
 
-### Core Methods
+## Common controls
 
-#### `loadSound(url: string, id: string): Promise<void>`
-Loads an audio file from a URL and decodes it for later use.
+```ts
+await sounds.play('music', 10); // offset in seconds
+sounds.pause('music');
+await sounds.resume('music');
+await sounds.seek('music', 20);
+sounds.setLoop('music', false);
+sounds.setPlaybackRate('music', 1.25); // changes speed AND pitch
+sounds.setGlobalPlaybackRate(1); // current and future tracks/effects
+sounds.setEffectVolume(0.7);
+sounds.setMasterVolume(0.8);
+sounds.mute();
+sounds.unmute(); // restores the configured master volume
 
-```javascript
-await soundsControl.loadSound('./sounds/explosion.mp3', 'explosion');
+sounds.pauseAll();
+await sounds.resumeAll(); // resumes every paused regular track
+sounds.stopEffects('click'); // stops all active effects with this id
+sounds.stopAll(); // regular tracks AND effects
+sounds.unloadSound('music'); // also cancels an in-flight load
+await sounds.dispose(); // release nodes; close only an owned context
 ```
 
-#### `isSoundLoaded(id: string): boolean`
-Checks if a sound has been loaded and is ready to play.
+Offsets must be finite and within the sound duration. Rates must be finite and positive. Volumes are clamped to `[0, 1]`; non-finite values throw. `pauseAll()` and `resumeAll()` do not pause one-shot effects. `stop(id)` resets a regular track; use `stopEffects(id)` for effects. Paused loop positions wrap at the sound duration. `playEffect()` allows overlapping instances of the same sound.
 
-```javascript
-if (soundsControl.isSoundLoaded('explosion')) {
-  // Sound is ready to play
-}
-```
+## API overview
 
-#### `play(id: string, startTime?: number): Promise<void>`
-Plays a sound from a specified start time (in seconds).
+| API                                                         | Purpose                                                    |
+| ----------------------------------------------------------- | ---------------------------------------------------------- |
+| `new SoundsControl({ context?, fetch? })`                   | Optionally inject an AudioContext and fetch implementation |
+| `SoundsControl.isSupported()`                               | Detect native/prefixed AudioContext availability           |
+| `unlock(): Promise<void>`                                   | Resume a suspended context from a user gesture             |
+| `loadSound(url, id, { signal? }?)`                          | Fetch/decode one asset; cache and deduplicate by id        |
+| `loadSounds([{ id, url }], { signal? }?)`                   | Load a batch concurrently                                  |
+| `isSoundLoaded(id)` / `getLoadedSounds()`                   | Inspect the decoded cache                                  |
+| `play(id, offset?)` / `loop(id, offset?)`                   | Start or replace a regular track; return a promise         |
+| `playEffect(id)` / `stopEffects(id?)`                       | Play overlapping effects / stop matching or all effects    |
+| `pause(id)` / `resume(id)` / `stop(id)`                     | Pause, resume asynchronously or reset one track            |
+| `pauseAll()` / `resumeAll()` / `stopAll()`                  | Control all tracks; stopAll also stops effects             |
+| `seek(id, seconds)` / `setLoop(id, enabled)`                | Change position asynchronously / toggle looping            |
+| `getDuration(id)` / `getPosition(id)`                       | Read seconds; require a loaded sound                       |
+| `getState(id)` / `isSoundPlaying(id)`                       | Read regular-track state: unloaded, ready, playing, paused |
+| `setVolume(value)` / `getVolume()`                          | Music bus volume                                           |
+| `setEffectVolume(value)` / `getEffectVolume()`              | Effect bus volume                                          |
+| `setMasterVolume(value)` / `getMasterVolume()`              | Overall volume                                             |
+| `mute()` / `unmute()` / `isMuted()`                         | Mute both buses without losing volume settings             |
+| `setPlaybackRate(id, rate)` / `setGlobalPlaybackRate(rate)` | Update speed/pitch, including active effects               |
+| `faster` / `slow` / `fasterEffect` / `slowEffect`           | Rate aliases; defaults 1.5 and 0.75                        |
+| `unloadSound(id)` / `unloadAll()`                           | Stop, cancel loads and remove cached buffers/settings      |
+| `dispose(): Promise<void>`                                  | Idempotent cleanup; reject future playback/mutations       |
 
-```javascript
-// Play from beginning
-await soundsControl.play('background-music');
+[Detailed API and lifecycle](https://github.com/Hangell/sounds-control/blob/master/docs/API.md) · [Migration notes](https://github.com/Hangell/sounds-control/blob/master/CHANGELOG.md)
 
-// Play from 30 seconds
-await soundsControl.play('background-music', 30);
-```
+## Framework integration
 
-#### `playEffect(id: string): Promise<void>`
-Plays a sound effect using the dedicated effects audio channel.
-
-```javascript
-await soundsControl.playEffect('coin-pickup');
-```
-
-#### `stop(id: string): void`
-Stops the playback of a sound and stores the pause time for later resumption.
-
-```javascript
-soundsControl.stop('background-music');
-```
-
-#### `loop(id: string, startTime?: number): void`
-Loops a sound continuously from a specified start time.
-
-```javascript
-soundsControl.loop('ambient-sound');
-```
-
-### Volume Control
-
-#### `setVolume(volume: number): void`
-Sets the master volume for all sounds (0.0 to 1.0).
-
-```javascript
-soundsControl.setVolume(0.5); // 50% volume
-```
-
-#### `setEffectVolume(volume: number): void`
-Sets the volume for sound effects only (0.0 to 1.0).
-
-```javascript
-soundsControl.setEffectVolume(0.8); // 80% volume for effects
-```
-
-### Playback Rate Control
-
-#### `setPlaybackRate(id: string, rate: number): void`
-Sets the playback rate for a specific sound.
-
-```javascript
-soundsControl.setPlaybackRate('music', 1.5); // 1.5x speed
-```
-
-#### `setGlobalPlaybackRate(rate: number): void`
-Sets the playback rate for all currently playing sounds.
-
-```javascript
-soundsControl.setGlobalPlaybackRate(0.5); // Half speed for all sounds
-```
-
-#### `faster(id: string, rate?: number): void`
-Makes a sound play faster (default: 1.5x speed).
-
-```javascript
-soundsControl.faster('dialogue'); // 1.5x speed
-soundsControl.faster('dialogue', 2.0); // 2x speed
-```
-
-#### `slow(id: string, rate?: number): void`
-Makes a sound play slower (default: 0.75x speed).
-
-```javascript
-soundsControl.slow('music'); // 0.75x speed
-```
-
-### Global Controls
-
-#### `pauseAll(): void`
-Pauses all currently playing sounds and stores their pause times.
-
-```javascript
-soundsControl.pauseAll();
-```
-
-#### `resumeAll(): void`
-Resumes all paused sounds from their stored pause times.
-
-```javascript
-soundsControl.resumeAll();
-```
-
-## 🔧 Framework Integration
-
-### Angular / Ionic
-
-#### Service Setup
-
-```typescript
-// audio.service.ts
-import { Injectable } from '@angular/core';
-import { SoundsControl } from 'sounds-control';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class AudioService {
-  private soundsControl: SoundsControl;
-
-  constructor() {
-    this.soundsControl = new SoundsControl();
-  }
-
-  async loadSound(url: string, id: string): Promise<void> {
-    await this.soundsControl.loadSound(url, id);
-  }
-
-  play(id: string, startTime?: number): void {
-    this.soundsControl.play(id, startTime);
-  }
-
-  playEffect(id: string): void {
-    this.soundsControl.playEffect(id);
-  }
-
-  setVolume(volume: number): void {
-    this.soundsControl.setVolume(volume);
-  }
-
-  pauseAll(): void {
-    this.soundsControl.pauseAll();
-  }
-
-  resumeAll(): void {
-    this.soundsControl.resumeAll();
-  }
-}
-```
-
-#### Component Usage
-
-```typescript
-// game.component.ts
-import { Component, OnInit } from '@angular/core';
-import { AudioService } from './audio.service';
-
-@Component({
-  selector: 'app-game',
-  templateUrl: './game.component.html'
-})
-export class GameComponent implements OnInit {
-  
-  constructor(private audioService: AudioService) {}
-
-  async ngOnInit() {
-    // Load game sounds
-    await this.audioService.loadSound('./assets/background.mp3', 'bg-music');
-    await this.audioService.loadSound('./assets/jump.mp3', 'jump-effect');
-    
-    // Start background music
-    this.audioService.play('bg-music');
-  }
-
-  onJump() {
-    this.audioService.playEffect('jump-effect');
-  }
-}
-```
-
-#### App State Management (Ionic)
-
-```typescript
-// app.component.ts
-import { Component, OnInit } from '@angular/core';
-import { App } from '@capacitor/app';
-import { AudioService } from './services/audio.service';
-
-@Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html'
-})
-export class AppComponent implements OnInit {
-
-  constructor(private audioService: AudioService) {}
-
-  ngOnInit() {
-    // Handle app state changes for mobile
-    App.addListener('appStateChange', ({ isActive }) => {
-      if (isActive) {
-        this.audioService.resumeAll();
-      } else {
-        this.audioService.pauseAll();
-      }
-    });
-  }
-}
-```
+Keep one controller per component/screen (or share one through your app's service). Preload on mount, unlock in the click/tap handler, and dispose during cleanup. Catch asynchronous failures and display an appropriate message in your application.
 
 ### React
 
-#### Hook-based Implementation
-
 ```tsx
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { SoundsControl } from 'sounds-control';
 
-const useAudio = () => {
-  const soundsControlRef = useRef<SoundsControl>();
-  const [isLoaded, setIsLoaded] = useState(false);
-
+export function PlayButton() {
+  const ref = useRef<SoundsControl | null>(null);
   useEffect(() => {
-    soundsControlRef.current = new SoundsControl();
-    setIsLoaded(true);
-
+    const audio = new SoundsControl();
+    ref.current = audio;
     return () => {
-      // Cleanup on unmount
-      soundsControlRef.current?.pauseAll();
+      ref.current = null;
+      void audio.dispose().catch(console.error);
     };
   }, []);
-
-  return {
-    soundsControl: soundsControlRef.current,
-    isLoaded
-  };
-};
-
-// Game Component
-const Game: React.FC = () => {
-  const { soundsControl, isLoaded } = useAudio();
-  const [soundsReady, setSoundsReady] = useState(false);
-
-  useEffect(() => {
-    const loadSounds = async () => {
-      if (!soundsControl || !isLoaded) return;
-
-      try {
-        await soundsControl.loadSound('./assets/music.mp3', 'bg-music');
-        await soundsControl.loadSound('./assets/click.mp3', 'click');
-        setSoundsReady(true);
-        
-        // Start background music
-        soundsControl.play('bg-music');
-      } catch (error) {
-        console.error('Failed to load sounds:', error);
-      }
-    };
-
-    loadSounds();
-  }, [soundsControl, isLoaded]);
-
-  const handleClick = () => {
-    if (soundsReady && soundsControl) {
-      soundsControl.playEffect('click');
+  const play = async () => {
+    const audio = ref.current;
+    if (!audio) return;
+    try {
+      await audio.unlock();
+      await audio.loadSound('/audio/click.wav', 'click');
+      await audio.playEffect('click');
+    } catch (error) {
+      console.error(error);
     }
   };
-
-  return (
-    <div className="game">
-      <button onClick={handleClick} disabled={!soundsReady}>
-        {soundsReady ? 'Click Me!' : 'Loading...'}
-      </button>
-    </div>
-  );
-};
-
-export default Game;
+  return <button onClick={play}>Play</button>;
+}
 ```
 
 ### Vue 3
 
-#### Composition API
-
 ```vue
-<template>
-  <div class="audio-player">
-    <button @click="playMusic" :disabled="!soundsReady">Play Music</button>
-    <button @click="playEffect" :disabled="!soundsReady">Play Effect</button>
-    <button @click="pauseAll">Pause All</button>
-    <button @click="resumeAll">Resume All</button>
-    
-    <div class="controls">
-      <label>Master Volume: {{ volume }}</label>
-      <input 
-        type="range" 
-        min="0" 
-        max="1" 
-        step="0.1" 
-        v-model="volume" 
-        @input="updateVolume"
-      />
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { onMounted, onBeforeUnmount } from 'vue';
+import { SoundsControl } from 'sounds-control';
+let audio: SoundsControl | undefined;
+onMounted(() => {
+  audio = new SoundsControl();
+});
+onBeforeUnmount(() => {
+  void audio?.dispose().catch(console.error);
+});
+async function play() {
+  if (!audio) return;
+  try {
+    await audio.unlock();
+    await audio.loadSound('/audio/click.wav', 'click');
+    await audio.playEffect('click');
+  } catch (error) {
+    console.error(error);
+  }
+}
+</script>
+<template><button @click="play">Play</button></template>
+```
+
+### Angular and Ionic Angular
+
+```ts
+import { Component, OnDestroy } from '@angular/core';
 import { SoundsControl } from 'sounds-control';
 
-const soundsControl = new SoundsControl();
-const soundsReady = ref(false);
-const volume = ref(1);
-
-onMounted(async () => {
-  try {
-    await soundsControl.loadSound('./assets/music.mp3', 'music');
-    await soundsControl.loadSound('./assets/beep.mp3', 'beep');
-    soundsReady.value = true;
-  } catch (error) {
-    console.error('Failed to load sounds:', error);
+@Component({
+  selector: 'app-play-button',
+  standalone: true,
+  template: '<button (click)="play()">Play</button>',
+})
+export class PlayButtonComponent implements OnDestroy {
+  private readonly audio = new SoundsControl(); // lazy; safe to construct in SSR
+  async play(): Promise<void> {
+    try {
+      await this.audio.unlock();
+      await this.audio.loadSound('/assets/audio/click.wav', 'click');
+      await this.audio.playEffect('click');
+    } catch (error) {
+      console.error(error);
+    }
   }
-});
+  ngOnDestroy(): void {
+    void this.audio.dispose().catch(console.error);
+  }
+}
+```
 
-onUnmounted(() => {
-  soundsControl.pauseAll();
-});
+In Ionic, use the same handler on an `ion-button`. If cached pages should release audio when leaving, dispose in `ionViewDidLeave` and create a new controller in `ionViewDidEnter`. Ionic React/Vue follow the same client lifecycle rules. Actual playback depends on WebView support and device autoplay policies.
 
-const playMusic = () => {
-  soundsControl.play('music');
-};
+### CommonJS and a browser script
 
-const playEffect = () => {
-  soundsControl.playEffect('beep');
-};
+```js
+const { SoundsControl } = require('sounds-control');
+```
 
-const pauseAll = () => {
-  soundsControl.pauseAll();
-};
+CommonJS import works in Node for SSR, package verification and tests with an injected context; it does not add native Node audio.
 
-const resumeAll = () => {
-  soundsControl.resumeAll();
-};
-
-const updateVolume = () => {
-  soundsControl.setVolume(volume.value);
-};
+```html
+<!-- Replace 1.1.0 with an actually published version. -->
+<script src="https://cdn.jsdelivr.net/npm/sounds-control@1.1.0/dist/index.umd.cjs"></script>
+<script>
+  const sounds = new SoundsControl.SoundsControl();
 </script>
 ```
 
-## 🎮 Game Development Examples
+## Contributing and quality
 
-### Simple Game Audio Manager
+Bug reports, feature proposals, examples and translations are welcome. See [CONTRIBUTING](https://github.com/Hangell/sounds-control/blob/master/CONTRIBUTING.md), [Code of Conduct](https://github.com/Hangell/sounds-control/blob/master/CODE_OF_CONDUCT.md) and the private reporting channel in [SECURITY](https://github.com/Hangell/sounds-control/blob/master/SECURITY.md).
 
-```typescript
-class GameAudioManager {
-  private soundsControl: SoundsControl;
-  private musicVolume = 0.7;
-  private effectsVolume = 1.0;
-
-  constructor() {
-    this.soundsControl = new SoundsControl();
-    this.init();
-  }
-
-  private async init() {
-    // Load all game sounds
-    const sounds = [
-      { url: './assets/music/bg-music.mp3', id: 'bg-music' },
-      { url: './assets/sfx/jump.mp3', id: 'jump' },
-      { url: './assets/sfx/coin.mp3', id: 'coin' },
-      { url: './assets/sfx/explosion.mp3', id: 'explosion' },
-    ];
-
-    await Promise.all(
-      sounds.map(sound => this.soundsControl.loadSound(sound.url, sound.id))
-    );
-
-    this.soundsControl.setVolume(this.musicVolume);
-    this.soundsControl.setEffectVolume(this.effectsVolume);
-  }
-
-  startBackgroundMusic() {
-    this.soundsControl.loop('bg-music');
-  }
-
-  playJumpSound() {
-    this.soundsControl.playEffect('jump');
-  }
-
-  playCoinSound() {
-    this.soundsControl.faster('coin', 1.2); // Slightly faster for excitement
-    this.soundsControl.playEffect('coin');
-  }
-
-  playExplosion() {
-    this.soundsControl.playEffect('explosion');
-  }
-
-  pauseGame() {
-    this.soundsControl.pauseAll();
-  }
-
-  resumeGame() {
-    this.soundsControl.resumeAll();
-  }
-
-  setMusicVolume(volume: number) {
-    this.musicVolume = volume;
-    this.soundsControl.setVolume(volume);
-  }
-
-  setEffectsVolume(volume: number) {
-    this.effectsVolume = volume;
-    this.soundsControl.setEffectVolume(volume);
-  }
-}
+```sh
+npm ci
+npm run check
 ```
 
-## 🛠️ Advanced Usage
+ESLint checks JavaScript/TypeScript, Prettier keeps formatting consistent, Husky runs staged checks before commits and the full check before pushes. CI validates Node 22/24. Tests cover audio state/races, types and the installed npm tarball (ESM, CommonJS and UMD). A separate Chromium smoke test exercises real Web Audio (`npx playwright install chromium && npm run test:browser`) and runs in CI. Validate additional browsers and device WebViews separately.
 
-### Dynamic Sound Loading
+## License
 
-```typescript
-class DynamicAudioLoader {
-  private soundsControl: SoundsControl;
-  private loadingPromises: Map<string, Promise<void>> = new Map();
-
-  constructor() {
-    this.soundsControl = new SoundsControl();
-  }
-
-  async loadSoundIfNeeded(url: string, id: string): Promise<void> {
-    if (this.soundsControl.isSoundLoaded(id)) {
-      return;
-    }
-
-    if (this.loadingPromises.has(id)) {
-      return this.loadingPromises.get(id);
-    }
-
-    const promise = this.soundsControl.loadSound(url, id);
-    this.loadingPromises.set(id, promise);
-
-    try {
-      await promise;
-    } finally {
-      this.loadingPromises.delete(id);
-    }
-  }
-
-  async playWithAutoLoad(url: string, id: string): Promise<void> {
-    await this.loadSoundIfNeeded(url, id);
-    return this.soundsControl.play(id);
-  }
-}
-```
-
-## 📱 Mobile Considerations
-
-### iOS Audio Context Activation
-
-```typescript
-// For iOS, audio context needs user interaction to start
-const initializeAudio = async () => {
-  const soundsControl = new SoundsControl();
-  
-  // Add a user interaction listener
-  const activateAudio = async () => {
-    try {
-      // Load a short silent sound to activate audio context
-      await soundsControl.loadSound('./assets/silence.mp3', 'silence');
-      await soundsControl.play('silence');
-      
-      document.removeEventListener('touchstart', activateAudio);
-      document.removeEventListener('click', activateAudio);
-    } catch (error) {
-      console.error('Failed to activate audio:', error);
-    }
-  };
-
-  document.addEventListener('touchstart', activateAudio, { once: true });
-  document.addEventListener('click', activateAudio, { once: true });
-};
-```
-
-## 🔧 Troubleshooting
-
-### Common Issues
-
-**Audio not playing on mobile:**
-- Ensure audio is triggered by user interaction
-- Check if device is in silent mode
-- Verify audio file formats are supported
-
-**Performance issues:**
-- Preload frequently used sounds
-- Use compressed audio formats (MP3, AAC)
-- Limit concurrent audio sources
-
-**Memory usage:**
-- Unload unused audio buffers
-- Use shorter audio files for effects
-- Consider streaming for long music tracks
-
-## 🧪 Testing
-
-```typescript
-// Example test setup with Jest
-import { SoundsControl } from 'sounds-control';
-
-// Mock AudioContext for testing
-global.AudioContext = jest.fn().mockImplementation(() => ({
-  createGain: jest.fn(() => ({
-    connect: jest.fn(),
-    gain: { setValueAtTime: jest.fn() }
-  })),
-  createBufferSource: jest.fn(() => ({
-    connect: jest.fn(),
-    start: jest.fn(),
-    stop: jest.fn(),
-    disconnect: jest.fn()
-  })),
-  decodeAudioData: jest.fn(),
-  currentTime: 0,
-  destination: {}
-}));
-
-describe('SoundsControl', () => {
-  let soundsControl: SoundsControl;
-
-  beforeEach(() => {
-    soundsControl = new SoundsControl();
-  });
-
-  test('should initialize without errors', () => {
-    expect(soundsControl).toBeInstanceOf(SoundsControl);
-  });
-
-  // Add more tests...
-});
-```
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
-
-### Development Setup
-
-```bash
-git clone https://github.com/hangell/sounds-control.git
-cd sounds-control
-npm install
-npm run build
-npm test
-```
-
-## 💖 Support
-
-If you found this library helpful, please consider:
-
-- ⭐ Giving it a star on GitHub
-- 📝 Reporting issues or requesting features
-- 💰 Supporting via Pix: rodrigo@hangell.org
-
-## 👨‍💻 Author
-<div align="center">
-
-![Rodrigo Rangel](https://avatars.githubusercontent.com/u/53544561?v=4)
-
-**Rodrigo Rangel**
-
-[![Website](https://img.shields.io/badge/website-000000?style=for-the-badge&logo=About.me&logoColor=white)](https://hangell.org)
-[![Google Play](https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/dev?id=5606456325281613718)
-[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/channel/UC8_zG7RFM2aMhI-p-6zmixw)
-[![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://www.facebook.com/hangell.org)
-[![LinkedIn](https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rodrigo-rangel-a80810170)
-
-</div>
-
----
-
-<p align="center">
-  Made with ❤️ for the developer community
-</p>
+[MIT](https://github.com/Hangell/sounds-control/blob/master/LICENSE) © Rodrigo Rangel.
